@@ -19,6 +19,22 @@ class ActivityRepository extends ServiceEntityRepository
         parent::__construct($registry, Activity::class);
     }
 
+    public function search($string){
+        return $this->createQueryBuilder('activity')
+        ->where('activity.nom LIKE :string')
+        ->setParameter(':string', '%'.$string.'%')
+        ->getQuery()
+        ->getResult();
+    }
+
+    public function paginate($nbElements, $pageActuelle){
+        return $this->createQueryBuilder('activity')
+        ->setFirstResult($pageActuelle * 2)
+        ->setMaxResults($nbElements)
+        ->getQuery()
+        ->getResult();
+    }
+
     // /**
     //  * @return Activity[] Returns an array of Activity objects
     //  */

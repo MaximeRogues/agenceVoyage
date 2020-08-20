@@ -3,32 +3,43 @@
 {% block title %}Hello ActivityController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+
 
 <div class="example-wrapper">
-    <h1>Hello  ! ✅</h1>
 
     <!-- J'affiche ici toutes mes activitées -->
-<h2>Liste de toutes mes activitées :</h2>
+    <h2>Liste de toutes mes activités :</h2>
 
-<a href="{{ path('addActivity') }}"><button class="btn btn-primary">Ajouter une activité</button></a>
-<ul>
-    {% for activity in activities %}
-    <li>
-        <b>
+    <a href="{{ path('addActivity') }}"><button class="btn btn-primary">Ajouter une activité 'Basket'</button></a>
+    <br> <br>
+
+    {# <input type="text" name="recherche" id="recherche" value="Entrez votre recherche"> 
+
+<a href="{{ path('searchActivity',{'string' : recherche.value }) }}"><button class="btn btn-primary">Rechercher </button></a> #}
+
+    <a href="{{ path('searchActivity',{'string' : 'basket'}) }}"><button class="btn btn-primary">Rechercher avec le mot
+            'basket'</button></a>
+
+    <ul>
+        {% for activity in activities %}
+        <br>
+        <li>
             <p>{{activity.id}} - {{activity.nom}}</p>
-            {#  #}
-            <a href="{{ path('detailActivity', {'id' : activity.id}) }}"><button class="btn btn-info">Détails</button></a>
-            <a href="{{ path('deleteActivity', {'id' : activity.id}) }}"><button class="btn btn-danger">Supprimer</button></a>
-            <a href="{{ path('updateActivity', {'id' : activity.id}) }}"><button class="btn btn-warning">Modifier</button></a>
 
-        </b>
-    </li>
+            <a href="{{ path('detailActivity', {'id' : activity.id}) }}"><button
+                    class="btn btn-info">Détails</button></a>
+            <a href="{{ path('deleteActivity', {'id' : activity.id}) }}"><button
+                    class="btn btn-danger">Supprimer</button></a>
+            <a href="{{ path('updateActivity', {'id' : activity.id}) }}"><button class="btn btn-warning">Modifier en
+                    'Handball'</button></a>
+
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% for i in 1..nbPage  %}
+    <a href="{{ path('activity', {'page' : i }) }}">Page {{ i }}</a>
     {% endfor %}
-</ul>
-   
+
 </div>
 {% endblock %}

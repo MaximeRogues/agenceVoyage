@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ActivityController!{% endblock %}
+
+{% block body %}
+
+
+<div class="example-wrapper">
+
+    <!-- J'affiche ici toutes mes activitées -->
+<h2>Résultat de la recherche avec le mot '{{ searchString }}' :</h2>
+
+<ul>
+    {% for activity in activities %}
+    <br>
+    <li>
+            <p>{{activity.id}} - {{activity.nom}}</p>
+            {#  #}
+            <a href="{{ path('detailActivity', {'id' : activity.id}) }}"><button class="btn btn-info">Détails</button></a>
+            <a href="{{ path('deleteActivity', {'id' : activity.id}) }}"><button class="btn btn-danger">Supprimer</button></a>
+            <a href="{{ path('updateActivity', {'id' : activity.id}) }}"><button class="btn btn-warning">Modifier</button></a>
+
+    </li>
+    {% endfor %}
+</ul>
+
+{% if activities|length == 0 %}
+    <p>Aucun résultat :(</p>
+{% endif %}
+   
+</div>
+{% endblock %}
