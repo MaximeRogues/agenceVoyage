@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SessionController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello ! ✅</h1>
+
+    {# Afficher le nom et prénom de l'utilisateur si ils existent #}
+    {% if firstname is null or lastname is null  %}
+        <h2> Vous n'êtes pas connecté </h2>
+    {% else %}
+        <h2>{{ firstname }} {{ lastname }} </h2>   
+
+        <img style='height: 300px' src="https://live.staticflickr.com/7766/18267350082_b7c4b7a1f5_b.jpg">
+        <br>
+    {% endif %}
+
+   
+
+    {# Afficher les nombres pairs de 0 à 100 #}
+    {% for number in 0..100 %}
+        {% if number % 2 == 0 %}
+            <h4>Le nombre {{ number }} est pair</h4>
+        {% endif %}
+    {% endfor %}
+
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ 'C:/Users/HB/Desktop/Symfony/TP/agenceVoyage/src/Controller/SessionController.php'|file_link(0) }}">src/Controller/SessionController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'C:/Users/HB/Desktop/Symfony/TP/agenceVoyage/templates/session/index.html.twig'|file_link(0) }}">templates/session/index.html.twig</a></code></li>
+    </ul>
+</div>
+{% endblock %}

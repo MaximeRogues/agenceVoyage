@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<br>
+
+{% include 'destination/header.html.twig' %}
+
+    {% if destination == 'all' %}
+        <h3>J'affiche toutes les destinations</h3>
+    
+    {% elseif destination == 'montagne' %}
+        <h3> IL CAILLE !</h3>
+
+    {% elseif destination == 'soleil' %}
+        <h3> Venez prendre un bain de soleil</h3>
+
+    {% elseif destination == 'campagne' %}
+        <h3> Un peu de tranquilité</h3>
+
+    {% endif %} 
+
+    <img src="{{ asset('images/destination/') ~ destination ~ '.jpg' }}" alt="" class="imgDestination">
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DestinationController!{% endblock %}
+
+{% block body %}
+
+
+<br>
+{% include 'destination/header.html.twig' %}
+
+{# <ul> #}
+    {# récupère la liste de destinations et boucle dessus pour créer des #}
+    {# {% for destination in destinations %}
+        <a href="{{ path('destinationType', { 'destination': destination}) }}"><button>{{ destination }}</button></a>
+    {% endfor %}
+</ul> #}
+
+
+<div >
+    
+    <h2>Choisissez une destination</h2>
+
+</div>
+
+{% endblock %}

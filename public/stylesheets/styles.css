@@ -1,0 +1,15 @@
+body {
+    font-family: 'Playfair Display SC', serif;
+    text-align: center;
+}
+
+.imgDestination {
+    height: 25rem;
+    width: 45rem;
+}
+
+#boutonTitre {
+    border-radius: 2px;
+    padding: 2rem;
+    color: red;
+}

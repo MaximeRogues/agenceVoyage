@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<br>
+
+
+{% include 'sejour/header.html.twig' %}
+
+    {% if sejour == 'all' %}
+        <h3>J'affiche tous les séjours</h3>
+    
+    {% elseif sejour == 'court' %}
+        <h3> ça va être trop court !</h3>
+
+    {% elseif sejour == 'weekend' %}
+        <h3> Weekend en amoureux ?  </h3>       
+
+    {% elseif sejour == 'semaine' %}
+        <h3> Il faut bien une semaine pour décompresser </h3>
+    {% endif %} 
+
+    
+
+{% endblock %}
