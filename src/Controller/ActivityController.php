@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Activity;
+use App\Form\ActivityType;
 use Doctrine\Common\Collections\Expr\Value;
 use DOMDocument;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Length;
 
@@ -21,12 +23,13 @@ class ActivityController extends AbstractController
     {
         // POUR AFFICHER TOUTES MES ACTIVITEES DE MA BASE DE DONNEE
         $activityRepo = $this->getDoctrine()->getRepository(Activity::class);
-        $activities = $activityRepo->findAll();
-        
-        $nbPerPage = 2;
+
+        $nbPerPage = 3;
         $nbActivities = $activityRepo->count([]);
         $nbPage = $nbActivities / $nbPerPage;
         $nbPage = ceil($nbPage);
+
+        $activities = $activityRepo->paginate($nbPerPage, $page);
 
         return $this->render('activity/index.html.twig', [
             'activities' => $activities,
@@ -38,16 +41,26 @@ class ActivityController extends AbstractController
     /**
      * @Route("/add/activity", name="addActivity")
      */
-    public function addActivity()
+    public function addActivity(Request $request)
     {
+        // je déclare une nouvelle activity vide
+        $form = $this->createForm(ActivityType::class, new Activity());
+        $form->handleRequest($request);
+        // si le formulaire est valide et envoyé
+        if($form->isSubmitted() && $form->isValid()) {
+            // je récupère les données du form
+            $newActivity = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            // j'insère la nouvelle activity en BDD
+            $entityManager->persist($newActivity);
+            $entityManager->flush();
+        } else {
+            return $this->render('activity/add.html.twig', [
+                'form' => $form->createView(),
+                'errors' => $form->getErrors()
+            ]);
+        }
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $activity = new Activity();
-        $activity->setNom('Basket');
-
-        $entityManager->persist($activity);
-        $entityManager->flush();
-        
         return $this->redirect('/activity');
     }
 

@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Destination;
+use App\Form\DestinationType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DestinationController extends AbstractController
@@ -13,13 +16,40 @@ class DestinationController extends AbstractController
     public function index()
     {
         // envoie une liste de destinations à index.html
-        $destinations = ['soleil', 'montagne', 'campagne'];
+        $destinationRepo = $this->getDoctrine()->getRepository(Destination::class);
+        $destinations = $destinationRepo->findAll();
 
         return $this->render('destination/index.html.twig', [
             'controller_name' => 'Le nom du controller, c\'est destination',
             'destinations' => $destinations
         ]);
         
+    }
+
+    /**
+     * @Route("add/destination", name="addDestination")
+     */
+    public function addDestination(Request $request)
+    {
+        // je déclare une nouvelle destination vide
+        $form = $this->createForm(DestinationType::class, new Destination());
+        $form->handleRequest($request);
+        // si le formulaire est valide et envoyé
+        if($form->isSubmitted() && $form->isValid()) {
+            // je récupère les données du form
+            $newDestination = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            // j'insère la nouvelle destination en BDD
+            $entityManager->persist($newDestination);
+            $entityManager->flush();
+        } else {
+            return $this->render('destination/add.html.twig', [
+                'form' => $form->createView(),
+                'errors' => $form->getErrors()
+            ]);
+        }
+
+        return $this->redirect('/destination');
     }
 
     /**

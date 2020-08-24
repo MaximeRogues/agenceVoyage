@@ -11,9 +11,39 @@
 <br>
 {% include 'sejour/header.html.twig' %}
 
+<br>
+<a href="{{path('addSejour') }}"><button class="btn btn-primary">Ajouter un séjour</button></a> <br> <br>
+
 <div >
 
-    <h2>Choisissez une durée de séjour</h2>
+    <h2>Tous les séjours</h2>
 
-</div>
+</div><br>
+
+
+<ul>
+    {# récupère la liste de sejours et boucle dessus pour créer des #}
+    {% for sejour in sejours %}
+        Titre : {{sejour.titre}} <br>
+        Type de logement : {{sejour.typeLogement}} <br>
+        Nombre de personne : {{sejour.nbPersonne}} <br>
+        Category : {{sejour.category}}
+        {% if sejour.category == 'Montagne'%}
+            <i class="fas fa-mountain"></i>
+        {% elseif sejour.category == 'Campagne' %} 
+            <i class="fas fa-tree"></i>
+        {% else %}
+            <i class="fas fa-umbrella-beach"></i>
+        {% endif %}
+        <br>
+        Destination : {{sejour.destination}} <br>
+        Description : {{sejour.description}} <br>
+
+        <a href="{{ path('sejourType', { 'sejour': sejour}) }}"><button>{{ sejour }}</button></a>
+        
+        <br> <br>
+        
+    {% endfor %}
+</ul>
+
 {% endblock %}

@@ -8,18 +8,39 @@
 <br>
 {% include 'destination/header.html.twig' %}
 
-{# <ul> #}
-    {# récupère la liste de destinations et boucle dessus pour créer des #}
-    {# {% for destination in destinations %}
-        <a href="{{ path('destinationType', { 'destination': destination}) }}"><button>{{ destination }}</button></a>
-    {% endfor %}
-</ul> #}
+<a href="{{ path('addDestination') }}"><button class="btn btn-primary">Ajouter une destination</button></a>
+
+<br><br>
 
 
-<div >
-    
-    <h2>Choisissez une destination</h2>
-
+<div>
+    <h2>Toutes les destinations</h2>
 </div>
+
+<br>
+
+<ul>
+    {# récupère la liste de destinations et boucle dessus pour créer des #}
+    {% for destination in destinations %}
+        Lieu : {{destination.lieu}} <br>
+        Pays : {{destination.pays}} <br>
+        Type : {{destination.type}} <br>
+        Date d'ouverture : {{destination.dateOuverture |date("d/m/Y")}} <br>
+
+        {% if destination.nbStar != 0 %}
+            {% for i in 1..destination.nbStar %}
+            <img src="https://www.pngpix.com/wp-content/uploads/2016/10/PNGPIX-COM-Star-PNG-Transparent-Image-2.png" alt="" style="width: 2rem;">
+            {% endfor %}
+        {% elseif destination.nbStar == 0 %}
+            Pas d'étoiles pour cette destination <img src="https://blogs-images.forbes.com/davidphelan/files/2017/07/emoji_update_2017_10.png" alt="" style="width: 2rem;">
+        {% endif %}
+        
+        
+        <br> <br>
+        {# <a href="{{ path('destinationType', { 'destination': destination}) }}"><button>{{ destination }}</button></a> #}
+    {% endfor %}
+</ul>
+
+
 
 {% endblock %}

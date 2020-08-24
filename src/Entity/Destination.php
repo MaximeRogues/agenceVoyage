@@ -6,6 +6,8 @@ use App\Repository\DestinationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=DestinationRepository::class)
@@ -41,6 +43,7 @@ class Destination
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(min = 0, max = 5, notInRangeMessage  = "Le nombre d'étoiles doit être entre 0 et 5")
      */
     private $nbStar;
 
@@ -52,6 +55,10 @@ class Destination
     public function __construct()
     {
         $this->sejour = new ArrayCollection();
+    }
+
+    public function __toString(){
+        return $this->lieu;
     }
 
     public function getId(): ?int

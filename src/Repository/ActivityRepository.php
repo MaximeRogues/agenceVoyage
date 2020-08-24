@@ -29,7 +29,8 @@ class ActivityRepository extends ServiceEntityRepository
 
     public function paginate($nbElements, $pageActuelle){
         return $this->createQueryBuilder('activity')
-        ->setFirstResult($pageActuelle * 2)
+        // le num du premier résultat de ma page est mon nombre d'activités * mon num de page -1
+        ->setFirstResult($nbElements * ($pageActuelle - 1))
         ->setMaxResults($nbElements)
         ->getQuery()
         ->getResult();

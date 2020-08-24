@@ -11,7 +11,18 @@
 <div class="example-wrapper">
     <h1>Hello  ! ✅</h1>
 
-    <p>Vous avez ajouté l'activité n°{{activity.id}}, c'est du {{activity.nom}}</p>
+    {{ form(form)}}
+
+    {% if errors %}
+        <ul>
+            {% for error in errors %}
+                <li>
+                    {{error.message}}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <br>
     <a href="{{ path('activity') }}"><button class="btn btn-warning">Aller à la liste d'activités</button></a>       
    

@@ -39,20 +39,6 @@ class Sejour
      */
     private $description;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $activite1;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $activite2;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $activite3;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="sejours")
@@ -74,6 +60,10 @@ class Sejour
     public function __construct()
     {
         $this->activity = new ArrayCollection();
+    }
+
+    public function __toString(){
+        return $this->titre;
     }
 
     public function getId(): ?int
@@ -125,42 +115,6 @@ class Sejour
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getActivite1(): ?string
-    {
-        return $this->activite1;
-    }
-
-    public function setActivite1(string $activite1): self
-    {
-        $this->activite1 = $activite1;
-
-        return $this;
-    }
-
-    public function getActivite2(): ?string
-    {
-        return $this->activite2;
-    }
-
-    public function setActivite2(string $activite2): self
-    {
-        $this->activite2 = $activite2;
-
-        return $this;
-    }
-
-    public function getActivite3(): ?string
-    {
-        return $this->activite3;
-    }
-
-    public function setActivite3(string $activite3): self
-    {
-        $this->activite3 = $activite3;
 
         return $this;
     }
