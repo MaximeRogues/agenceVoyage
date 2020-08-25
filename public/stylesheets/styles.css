@@ -13,3 +13,12 @@ body {
     padding: 2rem;
     color: red;
 }
+
+input, select, textarea {
+    margin: 0.5rem;
+}
+
+body > .imgActivity {
+    height: 5rem;
+    width: 8rem;
+}

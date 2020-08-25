@@ -24,11 +24,14 @@
         <br>
         <li>
             <p>{{activity.id}} - {{activity.nom}}</p>
+            <img src="{{ asset('images/' ~ activity.image) }}" alt="Illustration" class="w-25">
+            <br> <br>
 
             <a href="{{ path('detailActivity', {'id' : activity.id}) }}"><button
                     class="btn btn-info">Détails</button></a>
             <a href="{{ path('deleteActivity', {'id' : activity.id}) }}"><button
                     class="btn btn-danger">Supprimer</button></a>
+            <a href="{{ path('editActivity', {'activity' : activity.id}) }}"><button class="btn btn-warning">Modifier</button></a>
             <a href="{{ path('updateActivity', {'id' : activity.id}) }}"><button class="btn btn-warning">Modifier en
                     'Handball'</button></a>
 

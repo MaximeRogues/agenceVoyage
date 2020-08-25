@@ -29,6 +29,11 @@ class Activity
      */
     private $sejour;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $image;
+
     public function __construct()
     {
         $this->sejour = new ArrayCollection();
@@ -80,4 +85,18 @@ class Activity
 
         return $this;
     }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+   
 }

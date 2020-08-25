@@ -61,6 +61,30 @@ class SejourController extends AbstractController
         return $this->redirect('/sejour');
     }
 
+     /**
+     * @Route("/edit/sejour/{id}", name="editSejour")
+     */
+    public function editSejour($id, Request $request)
+    {
+        $sejour = $this->getDoctrine()->getRepository(Sejour::class)->find($id);
+
+        $form = $this->createForm(SejourType::class, $sejour);
+        $form->handleRequest($request);
+        // si le formulaire est valide et envoyé
+        if($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+        } else {
+            return $this->render('sejour/add.html.twig', [
+                'form' => $form->createView(),
+                'errors' => $form->getErrors()
+            ]);
+        }
+
+        return $this->redirect('/sejour');
+    }
+
+
 
 }
 

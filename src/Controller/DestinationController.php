@@ -52,6 +52,31 @@ class DestinationController extends AbstractController
         return $this->redirect('/destination');
     }
 
+     /**
+     * @Route("edit/destination/{id}", name="editDestination")
+     */
+    public function editDestination($id, Request $request)
+    {
+
+        $destination = $this->getDoctrine()->getRepository(Destination::class)->find($id);
+
+        // je déclare une nouvelle destination vide
+        $form = $this->createForm(DestinationType::class, $destination);
+        $form->handleRequest($request);
+        // si le formulaire est valide et envoyé
+        if($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+        } else {
+            return $this->render('destination/add.html.twig', [
+                'form' => $form->createView(),
+                'errors' => $form->getErrors()
+            ]);
+        }
+
+        return $this->redirect('/destination');
+    }
+
     /**
      * @Route("/destination/{destination}", name="destinationType")
      */

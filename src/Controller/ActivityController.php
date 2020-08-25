@@ -7,9 +7,12 @@ use App\Form\ActivityType;
 use Doctrine\Common\Collections\Expr\Value;
 use DOMDocument;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 class ActivityController extends AbstractController
 {
@@ -41,18 +44,89 @@ class ActivityController extends AbstractController
     /**
      * @Route("/add/activity", name="addActivity")
      */
-    public function addActivity(Request $request)
+    public function addActivity(Request $request, SluggerInterface $slugger)
     {
+        $directory = 'images/';
+
         // je déclare une nouvelle activity vide
-        $form = $this->createForm(ActivityType::class, new Activity());
+        $form = $this->createForm(ActivityType::class);
         $form->handleRequest($request);
         // si le formulaire est valide et envoyé
         if($form->isSubmitted() && $form->isValid()) {
             // je récupère les données du form
             $newActivity = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
+            /** @var UploadedFile $image */
+            $image = $form->get('image')->getData();
+    
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $image->move(
+                        $directory,
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'imagename' property to store the PDF file name
+                // instead of its contents
+                $newActivity->setImage($newFilename);
+            }
             // j'insère la nouvelle activity en BDD
             $entityManager->persist($newActivity);
+            $entityManager->flush();
+        
+        } else {
+            return $this->render('activity/add.html.twig', [
+                'form' => $form->createView(),
+                'errors' => $form->getErrors()
+            ]);
+        }
+
+        return $this->redirect('/activity');
+    }
+
+    /**
+     * @Route("/edit/activity/{activity}", name="editActivity")
+     */
+    public function editActivity(Activity $activity, Request $request, SluggerInterface $slugger)
+    {
+        $directory = 'images/';
+        $originalImage = $activity->getImage();
+
+        $form = $this->createForm(ActivityType::class, $activity);
+        $form->handleRequest($request);
+        // si le formulaire est valide et envoyé
+        if($form->isSubmitted() && $form->isValid()) {
+            $activity = $form->getData();
+            /** @var UploadedFile $image */
+            $image = $form->get('image')->getData();
+            if ($image && $originalImage) {
+                $image->move(
+                    $directory,
+                    $originalImage
+                );
+                $activity->setImage($originalImage);
+
+            } elseif($image && !$originalImage) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
+                $image->move(
+                    $directory,
+                    $newFilename
+                );
+                $activity->setImage($newFilename);
+            }
+
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
         } else {
             return $this->render('activity/add.html.twig', [
@@ -62,6 +136,7 @@ class ActivityController extends AbstractController
         }
 
         return $this->redirect('/activity');
+
     }
 
     /**

@@ -39,7 +39,7 @@
         Destination : {{sejour.destination}} <br>
         Description : {{sejour.description}} <br>
 
-        <a href="{{ path('sejourType', { 'sejour': sejour}) }}"><button>{{ sejour }}</button></a>
+        <a href="{{ path('editSejour', { 'id': sejour.id}) }}"><button class="btn btn-warning">Modifer</button></a>
         
         <br> <br>
         
